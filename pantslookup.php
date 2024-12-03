@@ -49,7 +49,7 @@ else {
  if (!empty($_GET["serial_num"]))
  {
    $serialnum = $_GET["serial_num"]; //gets name from the form
-   $sqlstatement = $conn->prepare("SELECT serial_num, price, stock, size_N, length_ID, color_ID, style_ID, Category_ID FROM pants  where serial_num LIKE ?"); //prepare the statement
+   $sqlstatement = $conn->prepare("SELECT serial_num, price, stock, size_N, length_ID, color_ID, style_ID, category_ID FROM pants  where serial_num LIKE ?"); //prepare the statement
    $searchTerm = "%".$serialnum."%";
    $sqlstatement->bind_param("s",$searchTerm); //insert the String variable into the ? in the above statement
    $sqlstatement->execute(); //execute the query
