@@ -28,6 +28,10 @@ $dbname = 'kbadowsk'; // Flashline username
 <form action="pantslookup.php" method=get>
 	<p>Enter the Serial Number: <input type=text size=20 name="serial_num">
 	<p>Enter max price: <input type=text size=5 name="price">
+    <p>Enter color: <input type=text size=5 name="color">
+    <p>Enter style: <input type=text size=5 name="style">
+    <p>Enter category: <input type=text size=5 name="catagory">
+    <p>Enter size: <input type=text size=5 name="size">
         <p> <input type=submit value="submit">
                 <input type="hidden" name="form_submitted" value="1" >
 </form>
@@ -49,14 +53,13 @@ else {
  if (!empty($_GET["serial_num"]))
  {
    $serialnum = $_GET["serial_num"]; //gets name from the form
-   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.lenngth, color.color, style.style, category.category, pants.stock
-	FROM pants
-   	INNER Join color ON pants.color_ID = color.color_ID
-    	INNER JOIN style ON pants.style_ID = style.style_ID
-   	 INNER JOIN size_L ON pants.length_ID = size_L.length_ID
-   	 INNER JOIN category ON pants.category_ID = category.category_ID
-    	WHERE serial_num = ?"); //prepare the statement
-   $searchTerm = "%".$serialnum."%";
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.length, color.color, style.style, category.category, pants.stock
+	                                      FROM pants
+                                          INNER Join color ON pants.color_ID = color.color_ID
+                                          INNER JOIN style ON pants.style_ID = style.style_ID
+                                          INNER JOIN size_L ON pants.length_ID = size_L.length_ID
+                                          INNER JOIN category ON pants.category_ID = category.category_ID
+                                          WHERE serial_num LIKE ?"); //prepare the statement
    $sqlstatement->bind_param("s",$searchTerm); //insert the String variable into the ? in the above statement
    $sqlstatement->execute(); //execute the query
    $result = $sqlstatement->get_result(); //return the results
@@ -65,8 +68,78 @@ else {
  elseif (!empty($_GET["price"]))
  {
    $pantsprice = $_GET["price"]; //gets name from the form
-   $sqlstatement = $conn->prepare("SELECT serial_num, price, stock FROM pants where price LIKE ?"); //prepare the statement
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.length, color.color, style.style, category.category, pants.stock
+                                         FROM pants
+                                         INNER Join color ON pants.color_ID = color.color_ID
+                                         INNER JOIN style ON pants.style_ID = style.style_ID
+                                         INNER JOIN size_L ON pants.length_ID = size_L.length_ID
+                                         INNER JOIN category ON pants.category_ID = category.category_ID
+                                         WHERE serial_num LIKE ?"); //prepare the statement
    $searchTerm = "%".$pantsprice."%";
+   $sqlstatement->bind_param("s",$searchTerm); //insert the integer variable into the ? in the above statement
+   $sqlstatement->execute(); //execute the query
+   $result = $sqlstatement->get_result(); //return the results
+   $sqlstatement->close();
+ }
+ elseif (!empty($_GET["color"]))
+ {
+   $pantscolor = $_GET["color"]; //gets name from the form
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.length, color.color, style.style, category.category, pants.stock
+                                    FROM pants
+                                    INNER Join color ON pants.color_ID = color.color_ID
+                                    INNER JOIN style ON pants.style_ID = style.style_ID
+                                    INNER JOIN size_L ON pants.length_ID = size_L.length_ID
+                                    INNER JOIN category ON pants.category_ID = category.category_ID
+                                    WHERE serial_num LIKE ?"); //prepare the statement
+   $searchTerm = "%".$pantscolor."%";
+   $sqlstatement->bind_param("s",$searchTerm); //insert the integer variable into the ? in the above statement
+   $sqlstatement->execute(); //execute the query
+   $result = $sqlstatement->get_result(); //return the results
+   $sqlstatement->close();
+ }
+ elseif (!empty($_GET["style"]))
+ {
+   $pantsstyle = $_GET["style"]; //gets name from the form
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.length, color.color, style.style, category.category, pants.stock
+	                                      FROM pants
+                                          INNER Join color ON pants.color_ID = color.color_ID
+                                          INNER JOIN style ON pants.style_ID = style.style_ID
+                                          INNER JOIN size_L ON pants.length_ID = size_L.length_ID
+                                          INNER JOIN category ON pants.category_ID = category.category_ID
+                                          WHERE serial_num LIKE ?"); //prepare the statement
+   $searchTerm = "%".$pantsstyle."%";
+   $sqlstatement->bind_param("s",$searchTerm); //insert the integer variable into the ? in the above statement
+   $sqlstatement->execute(); //execute the query
+   $result = $sqlstatement->get_result(); //return the results
+   $sqlstatement->close();
+ }
+ elseif (!empty($_GET["catagory"]))
+ {
+   $pantscat = $_GET["catagory"]; //gets name from the form
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.length, color.color, style.style, category.category, pants.stock
+	                                      FROM pants
+                                          INNER Join color ON pants.color_ID = color.color_ID
+                                          INNER JOIN style ON pants.style_ID = style.style_ID
+                                          INNER JOIN size_L ON pants.length_ID = size_L.length_ID
+                                          INNER JOIN category ON pants.category_ID = category.category_ID
+                                          WHERE serial_num LIKE ?"); //prepare the statement
+   $searchTerm = "%".$pantscat."%";
+   $sqlstatement->bind_param("s",$searchTerm); //insert the integer variable into the ? in the above statement
+   $sqlstatement->execute(); //execute the query
+   $result = $sqlstatement->get_result(); //return the results
+   $sqlstatement->close();
+ }
+ elseif (!empty($_GET["size"]))
+ {
+   $pantssize = $_GET["size"]; //gets name from the form
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.length, color.color, style.style, category.category, pants.stock
+                                        FROM pants
+                                        INNER Join color ON pants.color_ID = color.color_ID
+                                        INNER JOIN style ON pants.style_ID = style.style_ID
+                                        INNER JOIN size_L ON pants.length_ID = size_L.length_ID
+                                        INNER JOIN category ON pants.category_ID = category.category_ID
+                                        WHERE serial_num LIKE ?"); //prepare the statement
+   $searchTerm = "%".$pantssize."%";
    $sqlstatement->bind_param("s",$searchTerm); //insert the integer variable into the ? in the above statement
    $sqlstatement->execute(); //execute the query
    $result = $sqlstatement->get_result(); //return the results
