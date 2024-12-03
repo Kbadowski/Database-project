@@ -49,7 +49,13 @@ else {
  if (!empty($_GET["serial_num"]))
  {
    $serialnum = $_GET["serial_num"]; //gets name from the form
-   $sqlstatement = $conn->prepare("SELECT serial_num, price, stock, size_N, length_ID, color_ID, style_ID, category_ID FROM pants  where serial_num LIKE ?"); //prepare the statement
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.lenngth, color.color, style.style, category.category, pants.stock
+	FROM pants
+   	INNER Join color ON pants.color_ID = color.color_ID
+    	INNER JOIN style ON pants.style_ID = style.style_ID
+   	 INNER JOIN size_L ON pants.length_ID = size_L.length_ID
+   	 INNER JOIN category ON pants.category_ID = category.category_ID
+    	WHERE serial_num = ?"); //prepare the statement
    $searchTerm = "%".$serialnum."%";
    $sqlstatement->bind_param("s",$searchTerm); //insert the String variable into the ? in the above statement
    $sqlstatement->execute(); //execute the query
