@@ -60,6 +60,7 @@ else {
                                           INNER JOIN size_L ON pants.length_ID = size_L.length_ID
                                           INNER JOIN category ON pants.category_ID = category.category_ID
                                           WHERE serial_num LIKE ?"); //prepare the statement
+   $searchTerm="%".$serialnum."%";
    $sqlstatement->bind_param("s",$searchTerm); //insert the String variable into the ? in the above statement
    $sqlstatement->execute(); //execute the query
    $result = $sqlstatement->get_result(); //return the results
