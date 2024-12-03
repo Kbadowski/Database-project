@@ -49,7 +49,7 @@ else {
  if (!empty($_GET["serial_num"]))
  {
    $serialnum = $_GET["serial_num"]; //gets name from the form
-   $sqlstatement = $conn->prepare("SELECT serial_num, price, stock FROM pants where serial_num LIKE ?"); //prepare the statement
+   $sqlstatement = $conn->prepare("SELECT serial_num, price, stock, size_N, length_ID, color_ID, style_ID, Category_ID FROM pants  where serial_num LIKE ?"); //prepare the statement
    $searchTerm = "%".$serialnum."%";
    $sqlstatement->bind_param("s",$searchTerm); //insert the String variable into the ? in the above statement
    $sqlstatement->execute(); //execute the query
@@ -71,10 +71,28 @@ else {
  }
    if ($result->num_rows > 0) {
      	// Setup the table and headers
-	echo "<center><table><tr><th>Serial Number</th><th>Price</th><th>stock</th></tr>";
+	echo "<center><table><tr>
+            <th>Serial Number</th>
+            <th>Price</th>
+            <th>stock</th>
+            <th>size number</th>
+            <th>size length</th>
+            <th>color</th>
+            <th>style</th>
+            <th>category</th>
+            </tr>";
 	// output data of each row into a table row
 	 while($row = $result->fetch_assoc()) {
-		 echo "<tr><td>".$row["serial_num"]."</td><td>".$row["price"]."</td><td> ".$row["stock"]."</td></tr>";
+		 echo "<tr>
+                <td>".$row["serial_num"]."</td>
+                <td>".$row["price"]."</td>
+                <td> ".$row["stock"]."</td>
+                <td> ".$row["size_N"]."</td>
+                <td> ".$row["length_ID"]."</td>
+                <td> ".$row["color_ID"]."</td>
+                <td> ".$row["style_ID"]."</td>
+                <td> ".$row["category_ID"]."</td>
+                </tr>";
    	}
 	
 	echo "</table> </center>"; // close the table
