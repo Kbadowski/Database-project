@@ -49,7 +49,7 @@ else {
  if (!empty($_GET["serial_num"]))
  {
    $serialnum = $_GET["serial_num"]; //gets name from the form
-   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.lenngth, color.color, style.style, category.category, pants.stock
+   $sqlstatement = $conn->prepare("SELECT pants.serial_num, pants.price, pants.size_N, size_L.length, color.color, style.style, category.category, pants.stock
 	FROM pants
    	INNER Join color ON pants.color_ID = color.color_ID
     	INNER JOIN style ON pants.style_ID = style.style_ID
