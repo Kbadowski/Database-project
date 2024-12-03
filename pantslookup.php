@@ -30,7 +30,7 @@ $dbname = 'kbadowsk'; // Flashline username
         <p>Enter max price: <input type=text size=5 name="price">
     <p>Enter color: <input type=text size=5 name="color">
     <p>Enter style: <input type=text size=5 name="style">
-    <p>Enter category: <input type=text size=5 name="catagory">
+    <p>Enter category: <input type=text size=5 name="category">
     <p>Enter size: <input type=text size=5 name="size">
         <p> <input type=submit value="submit">
                 <input type="hidden" name="form_submitted" value="1" >
@@ -92,6 +92,7 @@ else {
                                     INNER JOIN size_L ON pants.length_ID = size_L.length_ID
                                     INNER JOIN category ON pants.category_ID = category.category_ID
                                     WHERE color.color = ?"); //prepare the statement
+   $searchTerm = $pantscolor;
    $sqlstatement->bind_param("s",$searchTerm); //insert the integer variable into the ? in the above statement
    $sqlstatement->execute(); //execute the query
    $result = $sqlstatement->get_result(); //return the results
