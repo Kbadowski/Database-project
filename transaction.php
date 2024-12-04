@@ -1,57 +1,24 @@
 <?php
-//Initialize the session
+// Initialize the session
 session_start();
 
-//Take user to login page if not logged in
-
-//Constants
+// Define constants
 $servername = 'localhost';
 $username = 'kbadowsk'; // Flashline username
 $password = 'Gx0Vf7bb'; // phpMyAdmin password
 $dbname = 'kbadowsk'; // Flashline username
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $customer_id = $_POST['customer_ID'];
-    $serial_num = $_POST['serial_num'];
-    $address_ID = $_POST['address_ID'];
-    $payment_ID = $_POST['payment_ID'];
-
-    //Create connection
-    $conn = new mysqli($servername, $email, $password, $dbname);
-
-    //Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    //Insert transaction into database
-    $stmt = $conn->prepare("INSERT INTO transactions (customer_ID, serial_num, address_ID, payment_ID VALUES (?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("isidd", $customer_ID, $serial_num, $address_ID, $payment_ID);
-    if ($stmt->execute()) {
-        $message = "Transaction recorded successfully!";
-    } else {
-        $message = "Error: " . $stmt->error;
-    }
-    $stmt->close();
-    $conn->close();
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Transaction Tracker</title>
+    <title>Pantology</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body { font: 14px sans-serif; text-align: center; }
         table, th, td { border: 1px solid black; }
-        input[type=text], input[type=number] {
-            width: 20%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            box-sizing: border-box;
-        }
-        input[type=submit] {
+        input[type=text] { width: 15%; padding: 12px 20px; margin: 8px 0; box-sizing: border-box; }
+        input[type=button], input[type=submit], input[type=reset] {
             background-color: #04AA6D;
             border: none;
             color: white;
@@ -63,17 +30,73 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
-<h2>Transaction Tracker</h2>
-<p>Enter details of the transaction below:</p>
-<?php
-if (isset($message)) {
-    echo "<p><strong>$message</strong></p>";
-}
-?>
-<form action="transaction.php" method="post">
-    <p>Customer ID: <input type="number" name="customer_id" required></p>
-    <p>Serial Number: <input type="text" name="serial_num" required></p>
-    <p><input type="submit" value="Record Transaction"></p>
-</form>
+    <h2>Pants Lookup:</h2>
+    <form action="transaction.php" method="get">
+        <p>Enter the Customer ID: <input type="text" size="20" name="customer_ID"></p>
+        <p>
+            <input type="submit" value="Submit">
+            <input type="hidden" name="form_submitted" value="1">
+        </p>
+    </form>
+
+    <?php
+    if (!isset($_GET["form_submitted"])) {
+        echo "Hello. Please enter a Customer ID and submit the form.";
+    } else {
+        // Create connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        if (!empty($_GET["customer_ID"])) {
+            $serialnum = $_GET["customer_ID"]; // Get Customer ID from form
+
+            // Prepare the statement
+            $sqlstatement = $conn->prepare("SELECT transaction_ID, customer_ID, serial_num
+                                            FROM transactions
+                                            WHERE customer_ID = ?");
+
+            if ($sqlstatement) {
+                $sqlstatement->bind_param("s", $serialnum); // Bind the variable
+                $sqlstatement->execute(); // Execute the query
+                $result = $sqlstatement->get_result(); // Get the results
+                $sqlstatement->close();
+
+                if ($result->num_rows > 0) {
+                    // Setup the table and headers
+                    echo "<center><table><tr>
+                        <th>Transaction ID</th>
+                        <th>Serial Number</th>
+                        <th>Customer ID</th>
+                        </tr>";
+
+                    // Output data of each row into a table row
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                            <td>" . $row["transaction_ID"] . "</td>
+                            <td>" . $row["serial_num"] . "</td>
+                            <td>" . $row["customer_ID"] . "</td>
+                            </tr>";
+                    }
+
+                    echo "</table></center>"; // Close the table
+                    echo "There are " . $result->num_rows . " results.";
+                } else {
+                    echo "Customer ID $serialnum not found. 0 results.";
+                }
+            } else {
+                echo "Error preparing statement: " . $conn->error;
+            }
+        } else {
+            echo "<b>Please enter a Customer ID number</b>";
+        }
+
+        $conn->close();
+    }
+    ?>
+    <p>Thanks for using the directory search!</p>
 </body>
 </html>
