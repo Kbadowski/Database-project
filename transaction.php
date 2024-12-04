@@ -98,5 +98,6 @@ $dbname = 'kbadowsk'; // Flashline username
     }
     ?>
     <p>Thanks for using the directory search!</p>
+    <p><a href="home.php">Go back home</a></p>
 </body>
 </html>
