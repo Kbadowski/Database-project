@@ -56,7 +56,7 @@ $dbname = 'kbadowsk'; // Flashline username
 
             // Prepare the statement
             $sqlstatement = $conn->prepare("SELECT transaction_ID, customer_ID, serial_num
-                                            FROM transactions
+                                            FROM transactions2
                                             WHERE customer_ID = ?");
 
             if ($sqlstatement) {
