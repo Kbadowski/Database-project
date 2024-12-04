@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //Insert transaction into database
-    $stmt = $conn->prepare("INSERT INTO transactions (customer_id, serial_num, quantity, price, total_cost, transaction_date) VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt = $conn->prepare("INSERT INTO transactions (customer_id, serial_num, quantity, price, total_cost) VALUES (?, ?, ?, ?, NOW())");
     $stmt->bind_param("isidd", $customer_id, $serial_num, $quantity, $price, $total_cost);
     if ($stmt->execute()) {
         $message = "Transaction recorded successfully!";
