@@ -51,6 +51,7 @@ session_start();
     <div class="button-container">
         <a href="pantslookup.php" class="button">Pants Lookup</a>
         <a href="transaction.php" class="button">Transaction Lookup</a>
+        <a href="adduser.php" class="button">Add User
     </div>
 </body>
 </html>
