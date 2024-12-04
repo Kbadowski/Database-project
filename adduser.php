@@ -179,5 +179,6 @@ else {
 
 $conn->close();
 ?>
+<p><a href="home.php">Go back home</a></p>
 </body>
 </html>
