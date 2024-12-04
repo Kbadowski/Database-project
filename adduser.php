@@ -2,8 +2,8 @@
 session_start();
 
 $servername = 'localhost';
-$username = 'kbadowsk'; 
-$password = 'Gx0Vf7bb'; 
+$username = 'kbadowsk';
+$password = 'Gx0Vf7bb';
 $dbname = 'kbadowsk';
 
 // Create connection
@@ -14,7 +14,7 @@ if ($conn->connect_error) {
 
 function displayusers() {
     global $conn;
-    $sql = "SELECT * FROM users2"; 
+    $sql = "SELECT * FROM users2";
         $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
@@ -66,7 +66,7 @@ function displayusers() {
 <?php
 if (!isset($_GET["form_submitted"]))
 {
-		echo "Hello. Please enter new users information and submit the form.";
+                echo "Hello. Please enter new users information and submit the form.";
     echo "<p>Here is a list of the current users:";
     displayFaculty();
 }
@@ -103,7 +103,7 @@ else {
             $stmt->close();
 
             // Insert into login2 table
-            $stmt = $conn->prepare("INSERT INTO login2 (email, password) VALUES (?, ?)");
+            $stmt = $conn->prepare("INSERT INTO login2 (email, pwd) VALUES (?, ?)");
             if ($sqlstatement === false) {
                 die("SQL preparation failed: " . $conn->error);
             }
