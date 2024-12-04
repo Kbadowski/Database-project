@@ -1,5 +1,3 @@
-//transaction
-
 <?php
 //Initialize the session
 session_start();
@@ -13,13 +11,10 @@ $password = 'Gx0Vf7bb'; // phpMyAdmin password
 $dbname = 'kbadowsk'; // Flashline username
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $customer_id = $_POST['customer_id'];
+    $customer_id = $_POST['customer_ID'];
     $serial_num = $_POST['serial_num'];
-    $quantity = $_POST['quantity'];
-    $price = $_POST['price'];
-
-    //Total cost of the transaction. Or are we limiting customer to one pair per transaction?
-    $total_cost = $quantity * $price;
+    $address_ID = $_POST['address_ID'];
+    $payment_ID = $_POST['payment_ID'];
 
     //Create connection
     $conn = new mysqli($servername, $email, $password, $dbname);
@@ -30,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     //Insert transaction into database
-    $stmt = $conn->prepare("INSERT INTO transactions (customer_id, serial_num, quantity, price, total_cost) VALUES (?, ?, ?, ?, NOW())");
-    $stmt->bind_param("isidd", $customer_id, $serial_num, $quantity, $price, $total_cost);
+    $stmt = $conn->prepare("INSERT INTO transactions (customer_ID, serial_num, address_ID, payment_ID VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param("isidd", $customer_ID, $serial_num, $address_ID, $payment_ID);
     if ($stmt->execute()) {
         $message = "Transaction recorded successfully!";
     } else {
@@ -78,8 +73,6 @@ if (isset($message)) {
 <form action="transaction.php" method="post">
     <p>Customer ID: <input type="number" name="customer_id" required></p>
     <p>Serial Number: <input type="text" name="serial_num" required></p>
-    <p>Quantity: <input type="number" name="quantity" min="1" required></p>
-    <p>Price: <input type="text" name="price" required></p>
     <p><input type="submit" value="Record Transaction"></p>
 </form>
 </body>
