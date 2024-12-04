@@ -32,7 +32,7 @@ function displayusers() {
                 <td>".$row["FirstName"]."</td>
                 <td> ".$row["LastName"]."</td>
                 <td>".$row["email"]."</td>
-                <td>".$row["password"]."</td>
+                <td>".$row["pwd"]."</td>
                 <td>".$row["waist"]."</td>
                 <td>".$row["hip"]."</td>
                 <td>".$row["inseam"]."</td>
@@ -65,7 +65,7 @@ New User Entry Form:</h2></p>
 	Enter user first name: <input type=text size=20 name="FirstName">
     Enter user last name: <input type=text size=20 name="LastName">
 	<p>Enter user email: <input type=text size=5 name="email">
-    <p>Enter user password: <input type=text size=5 name="password">
+    <p>Enter user password: <input type=text size=5 name="pwd">
     <p>Enter user waist size(in): <input type=text size=5 name="waist">
     <p>Enter user hip size(in): <input type=text size=5 name="hip">
     <p>Enter user inseam size(in): <input type=text size=5 name="inseam">
@@ -83,12 +83,12 @@ if (!isset($_GET["form_submitted"]))
     displayFaculty();
 }
 else {
-  if (!empty($_GET["FirstName"]) && !empty($_GET["LastName"])  && !empty($_GET["email"])  && !empty($_GET["password"])  && !empty($_GET["waist"])  && !empty($_GET["hip"])  && !empty($_GET["inseam"]))
+  if (!empty($_GET["FirstName"]) && !empty($_GET["LastName"])  && !empty($_GET["email"])  && !empty($_GET["pwd"])  && !empty($_GET["waist"])  && !empty($_GET["hip"])  && !empty($_GET["inseam"]))
 {
    $userfName = $_GET["FirstName"]; //gets name from the form
    $userlName = $_GET["LastName"]; //gets id from the form
    $useremail = $_GET["email"]; //get department from the form
-   $userpass = $_GET["password"];
+   $userpass = $_GET["pwd"];
    $userwaist = $_GET["waist"];
    $userhip = $_GET["hip"];
    $userinseam = $_GET["inseam"];
@@ -106,7 +106,7 @@ else {
    if ($sqlstatement === false) {
     die("SQL preparation failed: " . $conn->error);
     }
-    $sqlstatement->bind_param("sss",vars: $userwaist,$userhip, $userinseam); //insert the variables into the ? in the above statement
+    $sqlstatement->bind_param(types: "sss", $userwaist, $userhip, $userinseam);
     $sqlstatement->execute(); //execute the query
     echo $sqlstatement->error; //print an error if the query fails
     $sqlstatement->close();
