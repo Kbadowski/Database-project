@@ -185,5 +185,6 @@ else {
  } //end else condition where form is submitted
  ?> <!-- this is the end of our php code -->
 <p> Thanks for using the directory search!
+ <p><a href="home.php">Go back home</a></p>
 </body>
 </html>
