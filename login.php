@@ -44,9 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $_SESSION['customer_ID'] = $row['id'];
                 $_SESSION['email'] = $row['email'];
 
-                //Redirect to pantslookup.php
+                //Redirect to home.php
                 $success = "Login successful! Redirecting...";
-                header("location: pantslookup.php");
+                header("location: home.php");
                 exit;
             } else {
                 $error = "Invalid email or password.";
