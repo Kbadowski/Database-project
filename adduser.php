@@ -18,17 +18,25 @@ $sqlstatement->execute(); //execute the query
 $departments = $sqlstatement->get_result(); //return the results we'll use them in the web form
 $sqlstatement->close();
 
-function displayFaculty() {
+function displayusers() {
   global $conn; //reference the global connection object (scope)
-  $sql = "SELECT * FROM student";
+  $sql = "SELECT * FROM users2";
         $result = $conn->query($sql);
 
      if ($result->num_rows > 0) {
         // Setup the table and headers
-        echo "<Center><table><tr><th>ID</th><th>Name</th><th>Department</th><th>Total_Credits</th></tr>";
+        echo "<Center><table><tr><th>customer ID</th><th>first Name</th><th>last name</th><th>email</th><th>password</th><th>waist</th><th>hip</th><th>inseam</th></tr>";
        // output data of each row into a table row
        while($row = $result->fetch_assoc()) {
-           echo "<tr><td>".$row["ID"]."</td><td>".$row["name"]."</td><td> ".$row["dept_name"]."</td><td>$".$row["tot_cred"]."</td></tr>";
+           echo "<tr><td>".$row["customer_ID"]."</td>
+                <td>".$row["FirstName"]."</td>
+                <td> ".$row["LastName"]."</td>
+                <td>".$row["email"]."</td>
+                <td>".$row["password"]."</td>
+                <td>".$row["waist"]."</td>
+                <td>".$row["hip"]."</td>
+                <td>".$row["inseam"]."</td>
+                </tr>";
            }
       echo "</table></center>"; // close the table
       echo "There are ". $result->num_rows . " results.";
@@ -44,7 +52,7 @@ function displayFaculty() {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>New Student</title>
+    <title>new user</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body{ font: 14px sans-serif; text-align: center; }
@@ -52,19 +60,15 @@ function displayFaculty() {
     </style>
 </head>
 <body>
-New Student Entry Form:</h2></p>
-<form action="HW3data.php" method=get>
-	Enter Faculty name: <input type=text size=20 name="name">
-	<p>Enter Student ID number: <input type=text size=5 name="id">
-	<p>Select Student Department: 
-	<select name="department"
-        <?php //iterate through the results of the department query to build the web form
-	while($department = $departments->fetch_assoc()) {
-	?>
-		<option value="<?php echo $department["dept_name"]; ?>"><?php echo $department["dept_name"]; ?>
-		</option>
-	<?php } //end while loop ?>
-	</select> 
+New User Entry Form:</h2></p>
+<form action="adduser.php" method=get>
+	Enter user first name: <input type=text size=20 name="FirstName">
+    Enter user last name: <input type=text size=20 name="LastName">
+	<p>Enter user email: <input type=text size=5 name="email">
+    <p>Enter user password: <input type=text size=5 name="password">
+    <p>Enter user waist size(in): <input type=text size=5 name="waist">
+    <p>Enter user hip size(in): <input type=text size=5 name="hip">
+    <p>Enter user inseam size(in): <input type=text size=5 name="inseam">
 
   <p> <input type=submit value="submit">
                 <input type="hidden" name="form_submitted" value="1" >
@@ -74,33 +78,55 @@ New Student Entry Form:</h2></p>
 <?php //starting php code again!
 if (!isset($_GET["form_submitted"]))
 {
-		echo "Hello. Please enter new Student information and submit the form.";
-    echo "<p>Here is a list of the current Student:";
+		echo "Hello. Please enter new users information and submit the form.";
+    echo "<p>Here is a list of the current users:";
     displayFaculty();
 }
 else {
-  if (!empty($_GET["name"]) && !empty($_GET["id"]))
+  if (!empty($_GET["FirstName"]) && !empty($_GET["LastName"])  && !empty($_GET["email"])  && !empty($_GET["password"])  && !empty($_GET["waist"])  && !empty($_GET["hip"])  && !empty($_GET["inseam"]))
 {
-   $studentName = $_GET["name"]; //gets name from the form
-   $studentID = $_GET["id"]; //gets id from the form
-   $studentDept = $_GET["department"]; //get department from the form
-   $studentcredits = 0; //get salary from the form
-   $sqlstatement = $conn->prepare("INSERT INTO student values(?, ?, ?, ?)"); //prepare the statement
+   $userfName = $_GET["FirstName"]; //gets name from the form
+   $userlName = $_GET["LastName"]; //gets id from the form
+   $useremail = $_GET["email"]; //get department from the form
+   $userpass = $_GET["password"];
+   $userwaist = $_GET["waist"];
+   $userhip = $_GET["hip"];
+   $userinseam = $_GET["inseam"];
+
+   $sqlstatement = $conn->prepare("INSERT INTO name2 values(?,?)"); //prepare the statement
    if ($sqlstatement === false) {
     die("SQL preparation failed: " . $conn->error);
-}
+    }
+    $sqlstatement->bind_param("ss",$userfName,$userlName); //insert the variables into the ? in the above statement
+    $sqlstatement->execute(); //execute the query
+    echo $sqlstatement->error; //print an error if the query fails
+    $sqlstatement->close();
 
-   $sqlstatement->bind_param("sssd",$studentID,$studentName,$studentDept,$studentcredits); //insert the variables into the ? in the above statement
-   $sqlstatement->execute(); //execute the query
-   echo $sqlstatement->error; //print an error if the query fails
-   $sqlstatement->close();
+    $sqlstatement = $conn->prepare("INSERT INTO sizing2 values(?,?,?)"); //prepare the statement
+   if ($sqlstatement === false) {
+    die("SQL preparation failed: " . $conn->error);
+    }
+    $sqlstatement->bind_param("sss",vars: $userwaist,$userhip, $userinseam); //insert the variables into the ? in the above statement
+    $sqlstatement->execute(); //execute the query
+    echo $sqlstatement->error; //print an error if the query fails
+    $sqlstatement->close();
+
+    $sqlstatement = $conn->prepare("INSERT INTO login2 values(?,?)"); //prepare the statement
+   if ($sqlstatement === false) {
+    die("SQL preparation failed: " . $conn->error);
+    }
+    $sqlstatement->bind_param("ss",$useremail,$userpass); //insert the variables into the ? in the above statement
+    $sqlstatement->execute(); //execute the query
+    echo $sqlstatement->error; //print an error if the query fails
+    $sqlstatement->close();
+
  }
  else {
-	 echo "<b> Error: Please enter a name, an ID number and a salary to proceed.</b>";
+	 echo "<b> Error: Please fill in all feileds to proceed.</b>";
  }
  
-   echo "<p>Here is a list of the current Students:";
-   displayFaculty();
+   echo "<p>Here is a list of the current users:";
+   displayusers();
    $conn->close();
  } //end else condition where form is submitted
   ?> <!-- this is the end of our php code -->
