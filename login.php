@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
 
         //Prepare SQL statement to fetch user
-        $stmt = $conn->prepare("SELECT id, email, password FROM users WHERE email = ?");
+        $stmt = $conn->prepare("SELECT customer_ID, email, password FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if (password_verify($password, $row['password'])) {
                 //Credentials are correct, login successful
                 $_SESSION['loggedin'] = true;
-                $_SESSION['id'] = $row['id'];
+                $_SESSION['customer_ID'] = $row['id'];
                 $_SESSION['email'] = $row['email'];
 
                 //Redirect to pantslookup.php
