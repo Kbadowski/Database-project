@@ -38,6 +38,11 @@ if ($conn->connect_error) {
         City: <input type="text" name="city" required>
         State: <input type="text" name="state" required>
         Zip code: <input type="text" name="zip" required>
+        First name on card: <input type="text" name="Cfiirst_name" required>
+        Last name on card: <input type="text" name="clast_name" required>
+        Card number: <input type="text" name="card_num" required>
+        Security number on card: <input type="text" name="security_num" required>
+        Expiration date on card: <input type="text" name="expiration_date" required>
 
         <input type="submit" value="Submit">
             <input type="hidden" name="form_submitted" value="1">
@@ -52,7 +57,8 @@ else {
     if (!empty($_GET["FirstName"]) && !empty($_GET["LastName"]) 
         && !empty($_GET["email"]) && !empty($_GET["pwd"]) 
         && !empty($_GET["waist"]) && !empty($_GET["hip"]) && !empty($_GET["inseam"]) 
-        && !empty($_GET["street"])&& !empty($_GET["city"]) && !empty($_GET["state"]) && !empty($_GET["zip"])) {
+        && !empty($_GET["street"])&& !empty($_GET["city"]) && !empty($_GET["state"]) && !empty($_GET["zip"])
+        && !empty($_GET["Cfiirst_name"])&& !empty($_GET["clast_name"]) && !empty($_GET["card_num"]) && !empty($_GET["security_num"]) && !empty($_GET["expiration_date"])) {
         $userfName = $_GET["FirstName"];
         $userlName = $_GET["LastName"];
         $useremail = $_GET["email"];
@@ -64,6 +70,11 @@ else {
         $usercity = $_GET["city"];
         $userstate = $_GET["state"];
         $userzip = $_GET["zip"];
+        $usercfname = $_GET["Cfiirst_name"];
+        $userclname = $_GET["clast_name"];
+        $usercardnum = $_GET["card_num"];
+        $usersecnum = $_GET["security_num"];
+        $userexpnum = $_GET["expiration_date"];
 
         $conn->begin_transaction(); // Start transaction
         try {
@@ -102,17 +113,27 @@ else {
             if ($sqlstatement === false) {
                 die("SQL preparation failed: " . $conn->error);
             }
-            $stmt->bind_param("ss", $userstreet, $usercity,$userstate,$userzip);
+            $stmt->bind_param("ssss", $userstreet, $usercity,$userstate,$userzip);
             $stmt->execute();
             $address_id = $conn->insert_id;
             $stmt->close();
 
-            // Insert into users2 table
-            $stmt = $conn->prepare("INSERT INTO users2 (name_id, sizing_id, login_id, address_ID, payment_ID) VALUES (?, ?, ?, ?)");
+            // Insert into payment2 table
+            $stmt = $conn->prepare("INSERT INTO payment2 (Cfiirst_name,clast_name,card_num, security_num, expiration_date) VALUES (?, ?, ?, ?, ?)");
             if ($sqlstatement === false) {
                 die("SQL preparation failed: " . $conn->error);
             }
-            $stmt->bind_param("iii", $name_id, $sizing_id, $login_id, $address_id);
+            $stmt->bind_param("sssss", $usercfname, $userclname,$usercardnum,$usersecnum, $userexpnum);
+            $stmt->execute();
+            $payment_id = $conn->insert_id;
+            $stmt->close();
+
+            // Insert into users2 table
+            $stmt = $conn->prepare("INSERT INTO users2 (name_id, sizing_id, login_id, address_ID, payment_ID) VALUES (?, ?, ?, ?, ?)");
+            if ($sqlstatement === false) {
+                die("SQL preparation failed: " . $conn->error);
+            }
+            $stmt->bind_param("iiiii", $name_id, $sizing_id, $login_id, $address_id, $payment_id);
             $stmt->execute();
             $stmt->close();
 
