@@ -52,7 +52,7 @@ session_start();
         <a href="pantslookup.php" class="button">Pants Lookup</a>
         <a href="transaction.php" class="button">Transaction Lookup</a>
         <a href="adduser.php" class="button">Add User</a>
-        <a href="addtransactions.php' class="button">Add transaction </a>
+        <a href="addtransactions.php" class="button">Add transaction </a>
     </div>
 </body>
 </html>
