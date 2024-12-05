@@ -24,7 +24,7 @@ if ($conn->connect_error) {
     </style>
 </head>
 <body>
-    <h2>New User Entry Form:</h2>
+    <h2>New Transaction Form:</h2>
     <form action="addtransactions.php" method="get">
         Customer ID: <input type="text" name="customer_ID" required>
         pants serial number: <input type="text" name="serial_num" required>
