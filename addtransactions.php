@@ -28,7 +28,7 @@ if ($conn->connect_error) {
     <form action="addtransactions.php" method="get">
         Customer ID: <input type="text" name="customer_ID" required>
         pants serial number: <input type="text" name="serial_num" required>
-        
+
         <input type="submit" value="Submit">
             <input type="hidden" name="form_submitted" value="1">
     </form>
@@ -42,7 +42,7 @@ else {
     if (!empty($_GET["customer_ID"]) && !empty($_GET["serial_num"])){
         $usercustid = $_GET["customer_ID"];
         $usersnum = $_GET["serial_num"];
-       
+
 
         $conn->begin_transaction(); // Start transaction
         try {
